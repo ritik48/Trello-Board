@@ -32,8 +32,9 @@ export function Column({ tasks, column }: ColumnProp) {
             </div>
             <div className="">
                 <AddTaskDialog taskType={column}>
-                    <button className="border px-4 py-1.5 rounded-md text-sm bg-primary text-secondary hover:opacity-70 transition-all duration-300">
-                        Add +
+                    <button className="border flex items-center gap-2 hover:gap-4 px-4 py-1.5 rounded-md text-sm bg-primary text-secondary hover:opacity-70 transition-all duration-300">
+                        <span>Add</span>
+                        <span>+</span>
                     </button>
                 </AddTaskDialog>
             </div>
