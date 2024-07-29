@@ -1,6 +1,7 @@
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { Logout } from "./Logout";
 
 export async function Navbar() {
     const session = await getServerSession(authOptions);
@@ -37,21 +38,14 @@ export async function Navbar() {
                             </>
                         ) : (
                             <>
-                                {isAuthenticated && (
-                                    <div className="flex items-center gap-2 border rounded-full px-4 py-0.5">
-                                        <p className="w-fit">
-                                            {session?.user.username}
-                                        </p>
+                                <div className="flex items-center gap-2 border rounded-full px-4 py-0.5">
+                                    <p className="w-fit">
+                                        {session?.user.username}
+                                    </p>
 
-                                        <span className="w-2 inline-block h-2 bg-green-600 rounded-full"></span>
-                                    </div>
-                                )}
-                                <Link
-                                    href={"/"}
-                                    className="border px-4 py-1.5 rounded-md text-sm hover:bg-accent transition-all duration-300"
-                                >
-                                    Logout
-                                </Link>
+                                    <span className="w-2 inline-block h-2 bg-green-600 rounded-full"></span>
+                                </div>
+                                <Logout />
                             </>
                         )}
                     </div>
