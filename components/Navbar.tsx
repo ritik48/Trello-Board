@@ -14,7 +14,7 @@ export async function Navbar() {
                     <div className="flex items-center gap-16">
                         <span className="text-xl font-bold">Trello B.</span>
                         <Link
-                            href={"/"}
+                            href={"/board"}
                             className="text-sm text-muted-foreground"
                         >
                             Tasks
