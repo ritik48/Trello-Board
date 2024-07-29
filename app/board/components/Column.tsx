@@ -1,7 +1,7 @@
 "use client";
 
+import { AddTaskDialog } from "./AddTaskDialog";
 import { Task, TaskProp } from "./Task";
-
 
 export type ColumnType = "todo" | "progress" | "review" | "finished";
 
@@ -31,9 +31,11 @@ export function Column({ tasks, column }: ColumnProp) {
                 </div>
             </div>
             <div className="">
-                <button className="border px-4 py-1.5 rounded-md text-sm bg-primary text-secondary hover:opacity-70 transition-all duration-300">
-                    Add +
-                </button>
+                <AddTaskDialog taskType={column}>
+                    <button className="border px-4 py-1.5 rounded-md text-sm bg-primary text-secondary hover:opacity-70 transition-all duration-300">
+                        Add +
+                    </button>
+                </AddTaskDialog>
             </div>
         </div>
     );
