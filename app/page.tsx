@@ -1,7 +1,11 @@
+import { authOptions } from "@/lib/authOptions";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { VscArrowRight } from "react-icons/vsc";
 
-export default function Home() {
+export default async function Home() {
+    const session = await getServerSession(authOptions);
+    const isAuthenticated = !!session?.user.username;
     return (
         <section className="flex-1 flex items-center">
             <div className="max-w-7xl mx-auto -mt-60">
@@ -15,10 +19,14 @@ export default function Home() {
                     </p>
                     <div className="mt-5">
                         <Link
-                            href={"/"}
+                            href={isAuthenticated ? "/board" : "/signin"}
                             className="text-lg bg-zinc-700 shadow-sm shadow-zinc-700 rounded-md bg-primary text-secondary px-6 py-2 flex justify-center items-center gap-2 hover:gap-6 transition-all duration-300"
                         >
-                            <span>Get Started</span>
+                            <span>
+                                {!isAuthenticated
+                                    ? "Login to access task board"
+                                    : "Go to task board"}
+                            </span>
                             <VscArrowRight />
                         </Link>
                     </div>
