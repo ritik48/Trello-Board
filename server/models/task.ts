@@ -8,6 +8,7 @@ interface ITask {
     status: ColumnType;
     createdAt: Date;
     user: ObjectId;
+    id: string;
 }
 
 interface TaskModel extends Model<ITask> {}
@@ -25,6 +26,11 @@ const TaskSchema = new Schema<ITask, TaskModel>({
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
+    },
+    id: {
+        type: String,
+        required: true,
+        unique: true,
     },
     createdAt: {
         type: Date,
