@@ -9,12 +9,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { RxCross1 } from "react-icons/rx";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { AddTaskDialog } from "./AddTaskDialog";
-
-const priorityColor = {
-    low: "bg-green-500",
-    medium: "bg-yellow-500",
-    urgent: "bg-red-500",
-};
+import { PRIORITY_COLORS } from "@/lib/constants";
 
 export interface TaskProp {
     id: string;
@@ -73,7 +68,7 @@ export function Task({ id, title, status, priority, description }: TaskProp) {
                     <div className="flex items-center gap-2">
                         {priority !== "none" && (
                             <span
-                                className={`text-sm px-2 rounded-md py-0.5 ${priorityColor[priority]}`}
+                                className={`text-sm px-2 rounded-md py-0.5 ${PRIORITY_COLORS[priority]}`}
                             >
                                 {priority}
                             </span>

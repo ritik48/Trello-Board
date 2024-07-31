@@ -1,5 +1,6 @@
 "use client";
 
+import { COLUMN_LABEL, COLUMN_LABEL_COLORS } from "@/lib/constants";
 import { AddTaskDialog } from "./AddTaskDialog";
 import { Task, TaskProp } from "./Task";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
@@ -7,25 +8,11 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { useMemo } from "react";
 export type ColumnType = "todo" | "progress" | "review" | "finished";
 
-const ColumnLabel = {
-    todo: "To-Do",
-    progress: "In Progress",
-    review: "Under Review",
-    finished: "Completed",
-};
-
 interface ColumnProp {
     tasks: TaskProp[];
     column: ColumnType;
     id: string;
 }
-
-const colors = {
-    todo: "text-red-400",
-    progress: "text-yellow-200",
-    review: "text-blue-200",
-    finished: "text-green-400",
-};
 
 export function Column({ tasks, column, id }: ColumnProp) {
     const currentTasks = tasks.filter(
@@ -46,9 +33,11 @@ export function Column({ tasks, column, id }: ColumnProp) {
     return (
         <div className="flex flex-col gap-4" ref={setNodeRef}>
             <div className="flex flex-col gap-3">
-                <div className="flex items-center justify-between">
-                    <div className={`font-semibold ${colors[column]}`}>
-                        {ColumnLabel[column]}
+                <div className="flex items-center gap-10">
+                    <div
+                        className={`font-semibold ${COLUMN_LABEL_COLORS[column]}`}
+                    >
+                        {COLUMN_LABEL[column]}
                     </div>
                     <div className="text-green-400">{currentTasks.length}</div>
                 </div>

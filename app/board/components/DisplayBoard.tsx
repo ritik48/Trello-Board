@@ -129,6 +129,8 @@ export default function DisplayBoard({
                                 id={activeTask.id}
                                 status={activeTask.status}
                                 title={activeTask.title}
+                                priority={activeTask.priority || "none"}
+                                description={activeTask.description || ""}
                             />
                         )}
                     </DragOverlay>,

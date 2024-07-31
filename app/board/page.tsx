@@ -1,5 +1,4 @@
 import { getServerSession } from "next-auth";
-// import { DisplayBoard } from "./components/DisplayBoard";
 import { authOptions } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
 import { getTasks } from "@/server/services/getTasks";
