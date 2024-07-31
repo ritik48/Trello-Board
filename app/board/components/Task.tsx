@@ -9,6 +9,8 @@ export interface TaskProp {
     id: string;
     title: string;
     status: ColumnType;
+    description?: string;
+    priority: string;
 }
 
 export function Task({ id, title, status }: TaskProp) {
