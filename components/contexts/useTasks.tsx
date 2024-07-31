@@ -10,6 +10,7 @@ const initialContext = {
     tasks: [],
     updateDb: async () => {},
     addTask: async () => {},
+    deleteTask: async () => {},
     setTasks: () => {},
 };
 
@@ -17,6 +18,7 @@ type TaskContextType = {
     tasks: TaskProp[];
     updateDb: (oldTask: TaskProp, newTask: TaskProp) => Promise<void>;
     addTask: (task: TaskProp) => Promise<void>;
+    deleteTask: (taskId: string) => Promise<void>;
     setTasks: React.Dispatch<React.SetStateAction<TaskProp[] | []>>;
 };
 
@@ -25,6 +27,7 @@ const TasksContext = createContext<TaskContextType>(initialContext);
 const TasksProvider = ({ children }: { children: React.ReactNode }) => {
     const [tasks, setTasks] = useState<TaskProp[] | []>([]);
 
+    // ADD NEW TASK
     async function addTask(task: {
         title: string;
         status: ColumnType;
@@ -45,6 +48,19 @@ const TasksProvider = ({ children }: { children: React.ReactNode }) => {
         setTasks((prev) => [...prev, data.task]);
     }
 
+    async function deleteTask(taskId: string) {
+        if (!taskId) return;
+
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+
+        const deleteRes = await fetch(`/api/task/${taskId}`, {
+            method: "DELETE",
+        });
+        const data = await deleteRes.json();
+        console.log("data delete = ", data);
+    }
+
+    // UPDATE TASK ORDER WHEN A TASK MOVES TO NEW COLUMN, AND ALSO EDIT ITS STATUS
     async function updateDb(oldTask: TaskProp, newTask: TaskProp) {
         if (!oldTask || !newTask) return;
 
@@ -71,7 +87,9 @@ const TasksProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <TasksContext.Provider value={{ tasks, addTask, updateDb, setTasks }}>
+        <TasksContext.Provider
+            value={{ tasks, addTask, updateDb, deleteTask, setTasks }}
+        >
             {children}
         </TasksContext.Provider>
     );
