@@ -1,12 +1,12 @@
 import { ColumnType } from "./Column";
 
 export interface TaskProp {
-    id: number;
+    _id: string;
     title: string;
     status: ColumnType;
 }
 
-export function Task({ id, title, status }: TaskProp) {
+export function Task({ _id, title, status }: TaskProp) {
     return (
         <div className="border rounded-md p-3">
             <p>{title}</p>
