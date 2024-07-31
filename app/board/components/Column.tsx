@@ -47,9 +47,7 @@ export function Column({ tasks, column, id }: ColumnProp) {
         <div className="flex flex-col gap-4" ref={setNodeRef}>
             <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                    <div
-                        className={`font-semibold ${colors[column]}`}
-                    >
+                    <div className={`font-semibold ${colors[column]}`}>
                         {ColumnLabel[column]}
                     </div>
                     <div className="text-green-400">{currentTasks.length}</div>
@@ -64,6 +62,7 @@ export function Column({ tasks, column, id }: ColumnProp) {
                                     status={task.status}
                                     key={task.id}
                                     priority={task.priority || "none"}
+                                    description={task.description || ""}
                                 />
                             ))}
                         </SortableContext>
