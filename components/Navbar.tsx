@@ -31,13 +31,13 @@ export async function Navbar() {
                         {!isAuthenticated ? (
                             <>
                                 <Link
-                                    href={"/"}
+                                    href={"/signin"}
                                     className="border px-4 py-1.5 rounded-md text-sm bg-secondary text-primary hover:opacity-70 transition-all duration-300"
                                 >
                                     Login
                                 </Link>
                                 <Link
-                                    href={"/"}
+                                    href={"/signup"}
                                     className="border px-4 py-1.5 rounded-md text-sm text-secondary hover:bg-zinc-800 transition-all duration-300"
                                 >
                                     Signup
