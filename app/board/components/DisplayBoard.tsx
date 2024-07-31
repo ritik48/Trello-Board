@@ -13,6 +13,7 @@ import {
     useSensors,
     DragOverlay,
     DragStartEvent,
+    TouchSensor,
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import { useTasks } from "@/components/contexts/useTasks";
@@ -101,6 +102,9 @@ export default function DisplayBoard({
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: { distance: 10 },
+        }),
+        useSensor(TouchSensor, {
+            activationConstraint: { delay: 200, tolerance: 5 },
         })
     );
 
