@@ -25,36 +25,43 @@ const cols: { id: string; column: ColumnType }[] = [
     { id: "f", column: "finished" },
 ];
 
-export function DisplayBoard({ initialTasks }: { initialTasks: TaskProp[] }) {
-    const { setTasks, changeOrder, tasks } = useTasks();
+export default function DisplayBoard({
+    initialTasks,
+}: {
+    initialTasks: TaskProp[];
+}) {
+    const { setTasks, updateDb, tasks } = useTasks();
 
     const [activeTask, setActiveTask] = useState<TaskProp | null>(null);
+    const [updatedTask, setUpdatedTask] = useState<TaskProp | null>(null);
 
     async function handleDragEnd(event: DragEndEvent) {
-        // const { active, over } = event;
-        // console.log("inside odrag end");
-        // if (!over) return;
-        // if (active.id === over.id) return;
-        // await changeOrder(active, over);
+        if (!activeTask || !updatedTask) return;
+
+        await updateDb(activeTask, updatedTask);
+        setActiveTask(null);
+        setUpdatedTask(null);
     }
     function handleDragOver(event: DragOverEvent) {
         const { active, over } = event;
 
         if (!over) return;
         if (active.id === over.id) return;
-        
+
         if (
             active.data.current?.type === "Task" &&
             over.data.current?.type === "Task"
         ) {
-            setTasks((prevTasks) => {
-                const oldIndex = prevTasks.findIndex((t) => t.id === active.id);
-                const newIndex = prevTasks.findIndex((t) => t.id === over?.id);
+            const copy = [...tasks];
+            const oldIndex = copy.findIndex((t) => t.id === active.id);
+            const newIndex = copy.findIndex((t) => t.id === over?.id);
 
-                prevTasks[oldIndex].status = prevTasks[newIndex].status;
+            copy[oldIndex].status = copy[newIndex].status;
 
-                return arrayMove(prevTasks, oldIndex, newIndex);
-            });
+            const t = arrayMove(copy, oldIndex, newIndex);
+
+            setTasks(t);
+            setUpdatedTask(copy[oldIndex]);
             return;
         }
 
@@ -62,14 +69,18 @@ export function DisplayBoard({ initialTasks }: { initialTasks: TaskProp[] }) {
             active.data.current?.type === "Task" &&
             over.data.current?.type === "Column"
         ) {
-            setTasks((prevTasks) => {
-                const copy = [...prevTasks];
-                const oldIndex = prevTasks.findIndex((t) => t.id === active.id);
+            if (
+                active.data.current?.task.status ===
+                over.data.current?.column.column
+            )
+                return;
 
-                copy[oldIndex].status = over.data.current?.column.column;
+            const oldIndex = tasks.findIndex((t) => t.id === active.id);
+            const copy = [...tasks];
+            copy[oldIndex].status = over.data.current?.column.column;
 
-                return copy;
-            });
+            setTasks(copy);
+            setUpdatedTask(copy[oldIndex]);
         }
     }
     function onDragStart(event: DragStartEvent) {
@@ -85,7 +96,7 @@ export function DisplayBoard({ initialTasks }: { initialTasks: TaskProp[] }) {
 
     const columnIds = useMemo(() => {
         return cols.map((c) => c.id);
-    }, [cols]);
+    }, []);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
