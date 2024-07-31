@@ -54,6 +54,9 @@ interface AddTaskFormProp {
 export function AddTaskForm({ onClose, taskType }: AddTaskFormProp) {
     const form = useForm<TaskSchema>({
         resolver: zodResolver(taskSchema),
+        defaultValues: {
+            priority: "none",
+        },
     });
 
     const { addTask } = useTasks();
@@ -68,6 +71,8 @@ export function AddTaskForm({ onClose, taskType }: AddTaskFormProp) {
 
         onClose();
     }
+
+    const isSubmitting = form.formState.isSubmitting;
 
     return (
         <Form {...form}>
@@ -140,8 +145,8 @@ export function AddTaskForm({ onClose, taskType }: AddTaskFormProp) {
                         />
                     </div>
                 </div>
-                <Button type="submit" className="mt-2">
-                    Save
+                <Button type="submit" className="mt-2" disabled={isSubmitting}>
+                    {isSubmitting ? "Saving..." : "Save"}
                 </Button>
             </form>
         </Form>
