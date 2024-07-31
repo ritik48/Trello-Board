@@ -26,7 +26,7 @@ export default async function Board() {
 
     return (
         <section className="flex-1">
-            <div className="max-w-7xl mx-auto mt-16 flex flex-col gap-6">
+            <div className="max-w-7xl mx-auto mt-10 sm:mt-16 flex flex-col gap-6">
                 <h1 className="text-left text-xl font-semibold mx-3 text-secondary">
                     Your tasks
                 </h1>

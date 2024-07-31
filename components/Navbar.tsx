@@ -11,7 +11,7 @@ export async function Navbar() {
         <nav className="h-[50px] content-center py-2">
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center px-2">
-                    <div className="flex items-center gap-16">
+                    <div className="flex items-center gap-16 px-2">
                         <Link
                             href={"/"}
                             className="text-xl font-bold text-secondary"
