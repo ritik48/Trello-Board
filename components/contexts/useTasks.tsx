@@ -28,6 +28,8 @@ const TasksProvider = ({ children }: { children: React.ReactNode }) => {
     async function addTask(task: {
         title: string;
         status: ColumnType;
+        description?: string;
+        priority: string;
         id: string;
     }) {
         const res = await fetch("/api/task", {
