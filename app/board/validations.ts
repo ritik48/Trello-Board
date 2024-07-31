@@ -7,6 +7,8 @@ const taskSchema = z.object({
         },
         { message: "Title must have at atleast 4 characters" }
     ),
+    description: z.string().optional(),
+    priority: z.string().optional(),
 });
 
 type TaskSchema = z.infer<typeof taskSchema>;
