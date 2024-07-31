@@ -8,14 +8,14 @@ import React, { createContext, useContext, useState } from "react";
 
 const initialContext = {
     tasks: [],
-    changeOrder: async () => {},
+    updateDb: async () => {},
     addTask: async () => {},
     setTasks: () => {},
 };
 
 type TaskContextType = {
     tasks: TaskProp[];
-    changeOrder: (oldTask: Active, newTask: Over | null) => Promise<void>;
+    updateDb: (oldTask: TaskProp, newTask: TaskProp) => Promise<void>;
     addTask: (task: TaskProp) => Promise<void>;
     setTasks: React.Dispatch<React.SetStateAction<TaskProp[] | []>>;
 };
@@ -43,25 +43,33 @@ const TasksProvider = ({ children }: { children: React.ReactNode }) => {
         setTasks((prev) => [...prev, data.task]);
     }
 
-    async function changeOrder(oldTask: Active, newTask: Over | null) {
-        const oldIndex = tasks.findIndex((t) => t.id === oldTask.id);
-        const newIndex = tasks.findIndex((t) => t.id === newTask?.id);
+    async function updateDb(oldTask: TaskProp, newTask: TaskProp) {
+        if (!oldTask || !newTask) return;
 
-        const updatedTasks = arrayMove(tasks, oldIndex, newIndex);
-        setTasks(updatedTasks);
+        const statusChange = oldTask.status !== newTask.status;
 
-        // update the task order in the users db
-        const taskIds = updatedTasks.map((ut) => ut.id);
-        const res = await fetch("/api/task", {
+        if (statusChange) {
+            const updateTask = await fetch(`/api/task/${oldTask.id}`, {
+                method: "PATCH",
+                body: JSON.stringify({
+                    status: newTask.status,
+                }),
+            });
+            const data = await updateTask.json();
+        }
+
+        const taskIds = tasks.map((task) => task.id);
+
+        const updateOrder = await fetch("/api/task", {
             method: "PATCH",
             body: JSON.stringify({ taskIds }),
         });
+
+        const data = await updateOrder.json();
     }
 
     return (
-        <TasksContext.Provider
-            value={{ tasks, addTask, changeOrder, setTasks }}
-        >
+        <TasksContext.Provider value={{ tasks, addTask, updateDb, setTasks }}>
             {children}
         </TasksContext.Provider>
     );
