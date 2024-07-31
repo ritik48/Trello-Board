@@ -22,9 +22,11 @@ export function AddTaskDialog({ children, taskType }: AddTaskDialogProp) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>{children}</DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] w-[95%]">
                 <DialogHeader>
-                    <DialogTitle>Add new {taskType}</DialogTitle>
+                    <DialogTitle>
+                        Add to <span className="bg-primary text-secondary px-2 py-1 font-light rounded-md">{taskType}</span>
+                    </DialogTitle>
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
                 <AddTaskForm onClose={handleClose} taskType={taskType} />
