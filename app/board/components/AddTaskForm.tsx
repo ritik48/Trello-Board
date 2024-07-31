@@ -16,7 +16,35 @@ import {
 import { Button } from "@/components/ui/button";
 import { useTasks } from "@/components/contexts/useTasks";
 
+import { Textarea } from "@/components/ui/textarea";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+
 import { uuid } from "uuidv4";
+
+const options = [
+    {
+        value: "none",
+        label: "None",
+    },
+    {
+        value: "low",
+        label: "Low",
+    },
+    {
+        value: "medium",
+        label: "Medium",
+    },
+    {
+        value: "urgent",
+        label: "Urgent",
+    },
+];
 
 interface AddTaskFormProp {
     onClose: () => void;
@@ -31,7 +59,12 @@ export function AddTaskForm({ onClose, taskType }: AddTaskFormProp) {
     const { addTask } = useTasks();
 
     async function handleSubmit(value: TaskSchema) {
-        await addTask({ ...value, id: uuid(), status: taskType });
+        await addTask({
+            ...value,
+            id: uuid(),
+            status: taskType,
+            priority: value.priority ?? "none",
+        });
 
         onClose();
     }
@@ -40,7 +73,7 @@ export function AddTaskForm({ onClose, taskType }: AddTaskFormProp) {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
                 <div>
-                    <div>
+                    <div className="flex flex-col gap-2">
                         <FormField
                             control={form.control}
                             name="title"
@@ -53,6 +86,55 @@ export function AddTaskForm({ onClose, taskType }: AddTaskFormProp) {
                                         <Input {...field} placeholder="Title" />
                                     </FormControl>
                                     <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="description"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-primary">
+                                        Description
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Textarea
+                                            {...field}
+                                            placeholder="Add Description"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="priority"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Select
+                                            {...field}
+                                            onValueChange={(value) => {
+                                                field.onChange(value);
+                                            }}
+                                        >
+                                            <SelectTrigger className="w-[180px]">
+                                                <SelectValue placeholder="Select priority" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {options.map((option) => (
+                                                    <SelectItem
+                                                        key={option.value}
+                                                        value={option.value.toString()}
+                                                    >
+                                                        {option.label}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage className="text-red-500 dark:text-red-400 text-xs" />
                                 </FormItem>
                             )}
                         />
