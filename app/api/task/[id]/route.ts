@@ -65,3 +65,35 @@ export async function DELETE(
         });
     }
 }
+
+export async function PUT(
+    req: NextRequest,
+    { params }: { params: { id?: string } }
+) {
+    try {
+        const { id: taskId } = params;
+
+        const userId = await handleAuth();
+        const body = await req.json();
+
+        const { data } = body;
+
+        if (!taskId || !body) {
+            throw new Error("Invalid payload");
+        }
+
+        await connectDb();
+
+        await Task.findOneAndUpdate({ id: taskId }, { ...data });
+
+        return Response.json(
+            { success: true, message: "Task updated" },
+            { status: 200 }
+        );
+    } catch (error: any) {
+        return Response.json({
+            success: false,
+            message: error?.message || "Cannot process this request",
+        });
+    }
+}
