@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/select";
 
 import { uuid } from "uuidv4";
+import { TaskProp } from "./Task";
 
 const options = [
     {
@@ -49,26 +50,38 @@ const options = [
 interface AddTaskFormProp {
     onClose: () => void;
     taskType: ColumnType;
+    editConfig?: {
+        task: TaskProp;
+    };
 }
 
-export function AddTaskForm({ onClose, taskType }: AddTaskFormProp) {
+export function AddTaskForm({
+    onClose,
+    taskType,
+    editConfig,
+}: AddTaskFormProp) {
     const form = useForm<TaskSchema>({
         resolver: zodResolver(taskSchema),
         defaultValues: {
-            priority: "none",
+            priority: editConfig ? editConfig.task.priority || "none" : "none",
+            title: editConfig ? editConfig.task.title : "",
+            description: editConfig ? editConfig.task.description : "",
         },
     });
 
-    const { addTask } = useTasks();
+    const { addTask, editTask } = useTasks();
 
     async function handleSubmit(value: TaskSchema) {
-        await addTask({
+        const taskValue = {
             ...value,
-            id: uuid(),
             status: taskType,
             priority: value.priority ?? "none",
-        });
-
+        };
+        if (editConfig) {
+            await editTask({ ...taskValue, id: editConfig.task.id });
+        } else {
+            await addTask({ ...taskValue, id: uuid() });
+        }
         onClose();
     }
 
@@ -146,7 +159,13 @@ export function AddTaskForm({ onClose, taskType }: AddTaskFormProp) {
                     </div>
                 </div>
                 <Button type="submit" className="mt-2" disabled={isSubmitting}>
-                    {isSubmitting ? "Saving..." : "Save"}
+                    {isSubmitting
+                        ? editConfig
+                            ? "Editing..."
+                            : "Saving..."
+                        : editConfig
+                        ? "Edit"
+                        : "Save"}
                 </Button>
             </form>
         </Form>
