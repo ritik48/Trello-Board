@@ -23,9 +23,9 @@ export function Column({ tasks, column }: ColumnProp) {
                     {currentTasks.map((task) => (
                         <Task
                             title={task.title}
-                            id={task.id}
+                            _id={task._id}
                             status={task.status}
-                            key={task.id}
+                            key={task._id}
                         />
                     ))}
                 </div>
