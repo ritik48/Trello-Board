@@ -10,7 +10,10 @@ export async function getTasks() {
 
         const tasks = await Task.find({ user: userId });
 
-        return { success: true, tasks };
+        return {
+            success: true,
+            tasks: JSON.parse(JSON.stringify(tasks)),
+        };
     } catch (error: any) {
         return {
             success: false,
