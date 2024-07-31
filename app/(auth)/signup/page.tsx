@@ -45,7 +45,7 @@ export default function Signup() {
 
             await signIn("credentials", {
                 ...values,
-                callbackUrl: "/home",
+                callbackUrl: "/board",
             });
         } catch (error) {}
     };
