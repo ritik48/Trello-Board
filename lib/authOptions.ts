@@ -50,5 +50,8 @@ export const authOptions: NextAuthOptions = {
             return session;
         },
     },
-    secret: NEXT_AUTH_SECRET
+    secret: NEXT_AUTH_SECRET,
+    pages: {
+        signIn: "/signin",
+    },
 };
