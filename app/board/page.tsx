@@ -1,10 +1,15 @@
 import { getServerSession } from "next-auth";
-import { DisplayBoard } from "./components/DisplayBoard";
+// import { DisplayBoard } from "./components/DisplayBoard";
 import { authOptions } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
 import { getTasks } from "@/server/services/getTasks";
 import { TasksProvider } from "@/components/contexts/useTasks";
 import { rearrangeTasks } from "@/lib/helper";
+import dynamic from "next/dynamic";
+
+const DisplayBoard = dynamic(() => import("./components/DisplayBoard"), {
+    ssr: false,
+});
 
 export default async function Board() {
     const session = await getServerSession(authOptions);
