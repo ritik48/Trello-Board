@@ -21,9 +21,11 @@ export default async function Board() {
     const updatedTasks = rearrangeTasks(tasks, taskOrder);
 
     return (
-        <section className="flex-1 ">
-            <div className="max-w-7xl mx-auto mt-16 flex flex-col gap-3">
-                <h1 className="text-left text-xl font-semibold">Your tasks</h1>
+        <section className="flex-1">
+            <div className="max-w-7xl mx-auto mt-16 flex flex-col gap-6">
+                <h1 className="text-left text-xl font-semibold mx-3 text-secondary">
+                    Your tasks
+                </h1>
                 <TasksProvider>
                     <DisplayBoard initialTasks={updatedTasks} />
                 </TasksProvider>
