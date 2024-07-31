@@ -6,6 +6,7 @@ interface IUser {
     username: string;
     password: string;
     createdAt: Date;
+    taskOrder: string[];
 }
 
 interface UserModel extends Model<IUser> {}
@@ -19,6 +20,10 @@ const UserSchema = new Schema<IUser, UserModel>({
     password: {
         type: String,
         required: true,
+    },
+    taskOrder: {
+        type: [String],
+        default: [],
     },
     createdAt: {
         type: Date,
