@@ -39,7 +39,7 @@ export function Column({ tasks, column, id }: ColumnProp) {
                     >
                         {COLUMN_LABEL[column]}
                     </div>
-                    <div className="text-green-400">{currentTasks.length}</div>
+                    <div className="text-secondary">{currentTasks.length}</div>
                 </div>
                 {currentTasks.length > 0 && (
                     <div className="flex flex-col gap-2 overflow-y-auto max-h-[280px]">
