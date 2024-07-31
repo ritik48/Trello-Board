@@ -11,6 +11,7 @@ const initialContext = {
     updateDb: async () => {},
     addTask: async () => {},
     deleteTask: async () => {},
+    editTask: async () => {},
     setTasks: () => {},
 };
 
@@ -19,6 +20,7 @@ type TaskContextType = {
     updateDb: (oldTask: TaskProp, newTask: TaskProp) => Promise<void>;
     addTask: (task: TaskProp) => Promise<void>;
     deleteTask: (taskId: string) => Promise<void>;
+    editTask: (value: TaskProp) => Promise<void>;
     setTasks: React.Dispatch<React.SetStateAction<TaskProp[] | []>>;
 };
 
@@ -59,6 +61,20 @@ const TasksProvider = ({ children }: { children: React.ReactNode }) => {
         const data = await deleteRes.json();
         console.log("data delete = ", data);
     }
+    async function editTask(value: TaskProp) {
+        setTasks((prevTasks) => {
+            return prevTasks.map((task) =>
+                task.id !== value.id ? task : value
+            );
+        });
+
+        const editRes = await fetch(`/api/task/${value.id}`, {
+            method: "PUT",
+            body: JSON.stringify({ data: value }),
+        });
+        const data = await editRes.json();
+        console.log("data edit = ", data);
+    }
 
     // UPDATE TASK ORDER WHEN A TASK MOVES TO NEW COLUMN, AND ALSO EDIT ITS STATUS
     async function updateDb(oldTask: TaskProp, newTask: TaskProp) {
@@ -88,7 +104,7 @@ const TasksProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <TasksContext.Provider
-            value={{ tasks, addTask, updateDb, deleteTask, setTasks }}
+            value={{ tasks, addTask, updateDb, deleteTask, editTask, setTasks }}
         >
             {children}
         </TasksContext.Provider>
