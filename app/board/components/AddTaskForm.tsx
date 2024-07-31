@@ -14,6 +14,9 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { useTasks } from "@/components/contexts/useTasks";
+
+import { uuid } from "uuidv4";
 
 interface AddTaskFormProp {
     onClose: () => void;
@@ -25,8 +28,11 @@ export function AddTaskForm({ onClose, taskType }: AddTaskFormProp) {
         resolver: zodResolver(taskSchema),
     });
 
-    function handleSubmit(value: TaskSchema) {
-        console.log("value = ", value);
+    const { addTask } = useTasks();
+
+    async function handleSubmit(value: TaskSchema) {
+        await addTask({ ...value, id: uuid(), status: taskType });
+
         onClose();
     }
 
