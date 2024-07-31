@@ -23,7 +23,7 @@ export function HamMenu({ isAuthenticated }: { isAuthenticated: boolean }) {
                 {isAuthenticated ? (
                     <>
                         <DropdownMenuItem asChild>
-                            <Link href={"/home"}>Tasks</Link>
+                            <Link href={"/board"}>Tasks</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                             <Link

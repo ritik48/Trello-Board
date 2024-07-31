@@ -12,13 +12,16 @@ export async function Navbar() {
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center px-2">
                     <div className="flex items-center gap-16">
-                        <span className="text-xl font-bold text-secondary">
+                        <Link
+                            href={"/"}
+                            className="text-xl font-bold text-secondary"
+                        >
                             Trello B.
-                        </span>
+                        </Link>
                         {isAuthenticated && (
                             <Link
                                 href={"/board"}
-                                className="text-sm text-zinc-400 hover:underline"
+                                className="text-sm text-zinc-400 hover:underline hidden sm:block"
                             >
                                 Tasks
                             </Link>
