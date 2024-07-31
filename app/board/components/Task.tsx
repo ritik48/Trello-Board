@@ -7,6 +7,8 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 import { RxCross1 } from "react-icons/rx";
+import { MdOutlineModeEditOutline } from "react-icons/md";
+import { AddTaskDialog } from "./AddTaskDialog";
 
 const priorityColor = {
     low: "bg-green-500",
@@ -22,7 +24,7 @@ export interface TaskProp {
     priority: "low" | "medium" | "urgent" | "none";
 }
 
-export function Task({ id, title, status, priority }: TaskProp) {
+export function Task({ id, title, status, priority, description }: TaskProp) {
     const { deleteTask } = useTasks();
 
     const {
@@ -76,6 +78,24 @@ export function Task({ id, title, status, priority }: TaskProp) {
                                 {priority}
                             </span>
                         )}
+                        <AddTaskDialog
+                            taskType={status}
+                            editConfig={{
+                                task: {
+                                    id,
+                                    title,
+                                    status,
+                                    priority,
+                                    description,
+                                },
+                            }}
+                        >
+                            <MdOutlineModeEditOutline
+                                size={15}
+                                className="text-zinc-400 hover:text-zinc-100 hover:scale-125 transition-all duration-200"
+                            />
+                        </AddTaskDialog>
+
                         <RxCross1
                             size={15}
                             className="text-zinc-400 hover:text-zinc-100 hover:scale-125 transition-all duration-200"
