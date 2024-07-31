@@ -14,7 +14,7 @@ export async function POST(req: Request, res: Response) {
         const task = await Task.create({ ...taskData, user: userId });
         console.log("task = ", task);
         return Response.json(
-            { success: true, message: "Task addedd" },
+            { success: true, message: "Task addedd", task },
             { status: 201 }
         );
     } catch (error: any) {
