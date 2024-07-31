@@ -1,19 +1,30 @@
 "use client";
 
+import { useTasks } from "@/components/contexts/useTasks";
 import { ColumnType } from "./Column";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+
+import { RxCross1 } from "react-icons/rx";
+
+const priorityColor = {
+    low: "bg-green-500",
+    medium: "bg-yellow-500",
+    urgent: "bg-red-500",
+};
 
 export interface TaskProp {
     id: string;
     title: string;
     status: ColumnType;
     description?: string;
-    priority: string;
+    priority: "low" | "medium" | "urgent" | "none";
 }
 
-export function Task({ id, title, status }: TaskProp) {
+export function Task({ id, title, status, priority }: TaskProp) {
+    const { deleteTask } = useTasks();
+
     const {
         attributes,
         listeners,
@@ -54,7 +65,25 @@ export function Task({ id, title, status }: TaskProp) {
             {...attributes}
             {...listeners}
         >
-            <p>{title}</p>
+            <div className="flex items-center justify-between">
+                <p>{title}</p>
+                {
+                    <div className="flex items-center gap-2">
+                        {priority !== "none" && (
+                            <span
+                                className={`text-sm px-2 rounded-md py-0.5 ${priorityColor[priority]}`}
+                            >
+                                {priority}
+                            </span>
+                        )}
+                        <RxCross1
+                            size={15}
+                            className="text-zinc-400 hover:text-zinc-100 hover:scale-125 transition-all duration-200"
+                            onClick={async () => await deleteTask(id)}
+                        />
+                    </div>
+                }
+            </div>
         </div>
     );
 }
