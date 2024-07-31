@@ -10,6 +10,11 @@ export default async function Home() {
         <section className="flex-1 flex items-center">
             <div className="max-w-7xl mx-auto -mt-60">
                 <div className="flex flex-col justify-center items-center">
+                    {isAuthenticated && (
+                        <span className="text-center border text-secondary rounded-full px-6 my-3 py-1 text-sm border-zinc-700">
+                            Welcome 👋 {session?.user.username}
+                        </span>
+                    )}
                     <h1 className="text-3xl sm:text-5xl font-bold text-secondary text-center">
                         Organize Everything, Effortlessly
                     </h1>
