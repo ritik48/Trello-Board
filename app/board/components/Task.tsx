@@ -20,7 +20,7 @@ export interface TaskProp {
 }
 
 export function Task({ id, title, status, priority, description }: TaskProp) {
-    const { deleteTask } = useTasks();
+    const { deleteTask, edit } = useTasks();
 
     const {
         attributes,
@@ -33,8 +33,9 @@ export function Task({ id, title, status, priority, description }: TaskProp) {
         id,
         data: {
             type: "Task",
-            task: { id, title, status },
+            task: { id, title, status, priority },
         },
+        disabled: edit,
     });
 
     const style = {
