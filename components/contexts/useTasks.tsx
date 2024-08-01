@@ -4,6 +4,7 @@ import { ColumnType } from "@/app/board/components/Column";
 import { TaskProp } from "@/app/board/components/Task";
 import { Active, Over } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
+import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useState } from "react";
 import { boolean } from "zod";
 
@@ -35,6 +36,8 @@ const TasksProvider = ({ children }: { children: React.ReactNode }) => {
     const [tasks, setTasks] = useState<TaskProp[] | []>([]);
     const [edit, setEdit] = useState<boolean>(false);
 
+    const router = useRouter();
+
     // ADD NEW TASK
     async function addTask(task: {
         title: string;
@@ -54,6 +57,7 @@ const TasksProvider = ({ children }: { children: React.ReactNode }) => {
             return;
         }
         setTasks((prev) => [...prev, data.task]);
+        router.refresh();
     }
 
     async function deleteTask(taskId: string) {
@@ -65,7 +69,7 @@ const TasksProvider = ({ children }: { children: React.ReactNode }) => {
             method: "DELETE",
         });
         const data = await deleteRes.json();
-        console.log("data delete = ", data);
+        router.refresh();
     }
     async function editTask(value: TaskProp) {
         setTasks((prevTasks) => {
@@ -79,7 +83,7 @@ const TasksProvider = ({ children }: { children: React.ReactNode }) => {
             body: JSON.stringify({ data: value }),
         });
         const data = await editRes.json();
-        console.log("data edit = ", data);
+        router.refresh();
     }
 
     // UPDATE TASK ORDER WHEN A TASK MOVES TO NEW COLUMN, AND ALSO EDIT ITS STATUS
@@ -106,6 +110,7 @@ const TasksProvider = ({ children }: { children: React.ReactNode }) => {
         });
 
         const data = await updateOrder.json();
+        router.refresh();
     }
 
     function handleEdit(value: boolean) {
