@@ -5,6 +5,7 @@ import { TaskProp } from "@/app/board/components/Task";
 import { Active, Over } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import React, { createContext, useContext, useState } from "react";
+import { boolean } from "zod";
 
 const initialContext = {
     tasks: [],
@@ -13,6 +14,8 @@ const initialContext = {
     deleteTask: async () => {},
     editTask: async () => {},
     setTasks: () => {},
+    edit: false,
+    handleEdit: () => {},
 };
 
 type TaskContextType = {
@@ -22,12 +25,15 @@ type TaskContextType = {
     deleteTask: (taskId: string) => Promise<void>;
     editTask: (value: TaskProp) => Promise<void>;
     setTasks: React.Dispatch<React.SetStateAction<TaskProp[] | []>>;
+    edit: boolean;
+    handleEdit: (value: boolean) => void;
 };
 
 const TasksContext = createContext<TaskContextType>(initialContext);
 
 const TasksProvider = ({ children }: { children: React.ReactNode }) => {
     const [tasks, setTasks] = useState<TaskProp[] | []>([]);
+    const [edit, setEdit] = useState<boolean>(false);
 
     // ADD NEW TASK
     async function addTask(task: {
@@ -102,9 +108,22 @@ const TasksProvider = ({ children }: { children: React.ReactNode }) => {
         const data = await updateOrder.json();
     }
 
+    function handleEdit(value: boolean) {
+        setEdit(value);
+    }
+
     return (
         <TasksContext.Provider
-            value={{ tasks, addTask, updateDb, deleteTask, editTask, setTasks }}
+            value={{
+                tasks,
+                addTask,
+                updateDb,
+                deleteTask,
+                editTask,
+                setTasks,
+                edit,
+                handleEdit,
+            }}
         >
             {children}
         </TasksContext.Provider>
