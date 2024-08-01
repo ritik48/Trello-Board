@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import React from "react";
+import React, { useEffect } from "react";
 import { ColumnType } from "./Column";
 import { useForm } from "react-hook-form";
 import { taskSchema, TaskSchema } from "../validations";
@@ -69,7 +69,14 @@ export function AddTaskForm({
         },
     });
 
-    const { addTask, editTask } = useTasks();
+    const { addTask, editTask, handleEdit } = useTasks();
+
+    useEffect(() => {
+        if (editConfig) {
+            handleEdit(true);
+        }
+        return () => handleEdit(false);
+    }, [editConfig, handleEdit]);
 
     async function handleSubmit(value: TaskSchema) {
         const taskValue = {
